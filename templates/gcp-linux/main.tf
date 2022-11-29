@@ -86,8 +86,8 @@ resource "coder_app" "code-server" {
   display_name = "code-server"
   icon         = "/icon/code.svg"
   url          = "http://localhost:13337?folder=/home/${data.coder_workspace.me.owner}/workspace"
-  subdomain    = false
-  share        = "owner"
+  subdomain    = true
+  share        = "public"
 
   healthcheck {
     url       = "http://localhost:13337/healthz"
