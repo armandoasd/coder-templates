@@ -13,6 +13,7 @@ terraform {
 
 variable "project_id" {
   description = "Which Google Compute Project should your workspace live in?"
+  default = "tralevo"
 }
 
 variable "zone" {
@@ -21,6 +22,15 @@ variable "zone" {
   validation {
     condition     = contains(["northamerica-northeast1-a", "us-central1-a", "us-west2-c", "europe-west4-b", "southamerica-east1-a"], var.zone)
     error_message = "Invalid zone!"
+  }
+}
+
+variable "machine_type" {
+  description = "What Kind of machine do you wan to allocate"
+  default     = "e2-small"
+  validation {
+    condition     = contains(["e2-medium", "e2-small", "e2-micro"], var.zone)
+    error_message = "Invalid Machine!"
   }
 }
 
@@ -86,7 +96,7 @@ resource "google_compute_instance" "dev" {
   zone         = var.zone
   count        = data.coder_workspace.me.start_count
   name         = "coder-${lower(data.coder_workspace.me.owner)}-${lower(data.coder_workspace.me.name)}-root"
-  machine_type = "e2-medium"
+  machine_type = var.machine_type
   network_interface {
     network = "default"
     access_config {
