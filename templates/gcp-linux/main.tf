@@ -29,7 +29,7 @@ variable "machine_type" {
   description = "What Kind of machine do you wan to allocate"
   default     = "e2-small"
   validation {
-    condition     = contains(["e2-medium", "e2-small", "e2-micro"], var.zone)
+    condition     = contains(["e2-medium", "e2-small", "e2-micro"], var.machine_type)
     error_message = "Invalid Machine!"
   }
 }
