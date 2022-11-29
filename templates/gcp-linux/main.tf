@@ -18,9 +18,9 @@ variable "project_id" {
 
 variable "zone" {
   description = "What region should your workspace live in?"
-  default     = "europe-west4-b"
+  default     = "europe-central2-a"
   validation {
-    condition     = contains(["northamerica-northeast1-a", "us-central1-a", "us-west2-c", "europe-west4-b", "southamerica-east1-a"], var.zone)
+    condition     = contains(["northamerica-northeast1-a", "us-central1-a", "us-west2-c", "europe-west4-b","europe-central2-a", "southamerica-east1-a"], var.zone)
     error_message = "Invalid zone!"
   }
 }
@@ -71,7 +71,11 @@ resource "coder_agent" "main" {
 
     # install and start code-server
     curl -fsSL https://code-server.dev/install.sh | sh  | tee code-server-install.log
-    code-server --auth none --port 13337 | tee code-server-install.log &
+    git clone ${var.repo_uri} workspace && cd workspace
+    git checkout -b workshop/${data.coder_workspace.me.owner}
+    sudo npm i -g yarn
+    yarn && yarn build
+    code-server --auth none --port 13337 ./workspace | tee code-server-install.log &
   EOT
 }
 
@@ -128,7 +132,7 @@ fi
 
 curl -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash -
 sudo apt-get update
-sudo apt-get install -y nodejs
+sudo apt-get install -y nodejs git
 
 exec sudo -u "${local.linux_user}" sh -c '${coder_agent.main.init_script}'
 EOMETA
