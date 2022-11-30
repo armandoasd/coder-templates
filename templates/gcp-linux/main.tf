@@ -75,6 +75,7 @@ resource "coder_agent" "main" {
     git checkout -b workshop/${data.coder_workspace.me.owner}
     sudo npm i -g yarn
     yarn && yarn build
+    yarn start
     code-server --auth none --port 13337 ./workspace | tee code-server-install.log &
   EOT
 }
@@ -101,12 +102,12 @@ resource "coder_app" "node-app" {
   agent_id  = coder_agent.main.id
   slug      = "node-app"
   icon      = "https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg"
-  url       = "http://localhost:3000"
+  url       = "http://127.0.0.1:3000"
   subdomain = true
   share     = "public"
 
   healthcheck {
-    url       = "http://localhost:3000/healthz"
+    url       = "http://127.0.0.1:3000/healthz"
     interval  = 10
     threshold = 30
   }
