@@ -41,6 +41,11 @@ variable "repo_uri" {
   default     = "https://github.com/armandoasd/nextjs-docker.git"
 }
 
+variable "node_app_port" {
+  description = "Node Port"
+  default = "3000"
+}
+
 provider "google" {
   zone    = var.zone
   project = var.project_id
@@ -101,12 +106,12 @@ resource "coder_app" "node-app" {
   agent_id  = coder_agent.main.id
   slug      = "node-app"
   icon      = "https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg"
-  url       = "http://localhost:3000/"
+  url       = "http://localhost:${var.node_app_port}/"
   subdomain = true
   share     = "public"
 
   healthcheck {
-    url       = "http://localhost:3000/healthz"
+    url       = "http://localhost:${var.node_app_port}/healthz"
     interval  = 10
     threshold = 10
   }
