@@ -97,20 +97,19 @@ resource "coder_app" "code-server" {
 }
 
 #Node App
-resource "coder_app" "node-react-app" {
+resource "coder_app" "node-app" {
   agent_id  = coder_agent.main.id
-  slug      = "node-react-app"
+  slug      = "node-app"
   icon      = "https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg"
   url       = "http://localhost:3000/"
   subdomain = true
-  share     = "authenticated"
+  share     = "public"
 
   healthcheck {
     url       = "http://localhost:3000/healthz"
     interval  = 10
     threshold = 10
   }
-
 }
 
 resource "google_compute_instance" "dev" {
