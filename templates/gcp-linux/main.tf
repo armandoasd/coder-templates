@@ -124,6 +124,7 @@ resource "google_compute_instance" "dev" {
       // Ephemeral public IP
     }
   }
+  tags = ["http-server","https-server"]
   boot_disk {
     auto_delete = false
     source      = google_compute_disk.root.name
