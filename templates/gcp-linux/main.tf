@@ -75,7 +75,6 @@ resource "coder_agent" "main" {
     git checkout -b workshop/${data.coder_workspace.me.owner}
     sudo npm i -g yarn
     yarn && yarn build
-    yarn start
     code-server --auth none --port 13337 ./workspace | tee code-server-install.log &
   EOT
 }
