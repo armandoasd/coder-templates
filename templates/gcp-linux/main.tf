@@ -98,18 +98,18 @@ resource "coder_app" "code-server" {
 }
 
 #Node App
-resource "coder_app" "node-app" {
+resource "coder_app" "node-react-app" {
   agent_id  = coder_agent.main.id
-  slug      = "node-app"
+  slug      = "node-react-app"
   icon      = "https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg"
-  url       = "http://127.0.0.1:3000"
+  url       = "http://localhost:3000/"
   subdomain = true
-  share     = "public"
+  share     = "authenticated"
 
   healthcheck {
-    url       = "http://127.0.0.1:3000/healthz"
+    url       = "http://localhost:3000/healthz"
     interval  = 10
-    threshold = 30
+    threshold = 10
   }
 
 }
@@ -117,7 +117,7 @@ resource "coder_app" "node-app" {
 resource "google_compute_instance" "dev" {
   zone         = var.zone
   count        = data.coder_workspace.me.start_count
-  name         = "coder-${lower(data.coder_workspace.me.owner)}-${lower(data.coder_workspace.me.name)}-root"
+  name         = "${lower(data.coder_workspace.me.name)}"
   machine_type = var.machine_type
   network_interface {
     network = "default"
