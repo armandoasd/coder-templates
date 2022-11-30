@@ -86,14 +86,31 @@ resource "coder_app" "code-server" {
   display_name = "code-server"
   icon         = "/icon/code.svg"
   url          = "http://localhost:13337?folder=/home/${data.coder_workspace.me.owner}/workspace"
-  subdomain    = true
-  share        = "public"
+  subdomain    = false
+  share        = "owner"
 
   healthcheck {
     url       = "http://localhost:13337/healthz"
     interval  = 3
     threshold = 10
   }
+}
+
+#Node App
+resource "coder_app" "node-app" {
+  agent_id  = coder_agent.dev.id
+  slug      = "node-app"
+  icon      = "https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg"
+  url       = "http://localhost:3000"
+  subdomain = true
+  share     = "public"
+
+  healthcheck {
+    url       = "http://localhost:3000/healthz"
+    interval  = 10
+    threshold = 30
+  }
+
 }
 
 resource "google_compute_instance" "dev" {
