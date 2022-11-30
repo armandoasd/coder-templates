@@ -98,7 +98,7 @@ resource "coder_app" "code-server" {
 
 #Node App
 resource "coder_app" "node-app" {
-  agent_id  = coder_agent.dev.id
+  agent_id  = coder_agent.main.id
   slug      = "node-app"
   icon      = "https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg"
   url       = "http://localhost:3000"
